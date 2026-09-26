@@ -21,7 +21,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install cartopy matplotlib
+        run: pip install cartopy matplotlib numpy pillow requests
 
       - name: Generate map image
         run: python generate_map.py
@@ -30,6 +30,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/map.jpg
+          git add docs/map.jpg assets/
           git commit -m "Update day/night map" || echo "No changes to commit"
           git push
