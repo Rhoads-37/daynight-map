@@ -34,8 +34,8 @@ ASSETS_DIR = "assets"
 DAY_IMAGE_PATH = os.path.join(ASSETS_DIR, "day.jpg")
 NIGHT_IMAGE_PATH = os.path.join(ASSETS_DIR, "night.jpg")
 
-# 太平洋を中心にすることで、左にアジア、右に北米が入る配置にする
-CENTRAL_LONGITUDE = 180.0
+# 太平洋を中心(180.0)にすることで、左にアジア、右に北米が入る配置にする
+CENTRAL_LONGITUDE = 160.0
 
 OUTPUT_SIZE = (1600, 900)  # ピクセル(横長)
 
