@@ -21,7 +21,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install cartopy matplotlib numpy pillow requests
+        run: pip install cartopy matplotlib numpy pillow requests scipy
 
       - name: Generate map image
         run: python generate_map.py
