@@ -34,11 +34,10 @@ ASSETS_DIR = "assets"
 DAY_IMAGE_PATH = os.path.join(ASSETS_DIR, "day.jpg")
 NIGHT_IMAGE_PATH = os.path.join(ASSETS_DIR, "night.jpg")
 
-# 視点の中心(固定)。日本付近を中心にした地球儀にしています。
-CENTRAL_LONGITUDE = 140.0
-CENTRAL_LATITUDE = 20.0
+# 太平洋を中心にすることで、左にアジア、右に北米が入る配置にする
+CENTRAL_LONGITUDE = 180.0
 
-OUTPUT_SIZE = (1200, 1200)  # ピクセル(正方形)
+OUTPUT_SIZE = (1600, 900)  # ピクセル(横長)
 
 
 # --- 基礎画像の取得(初回のみダウンロードし、以降は再利用) -------------
@@ -121,33 +120,25 @@ def _solar_elevation(lat_grid, lon_grid, sub_lat, sub_lon):
     return np.degrees(np.arcsin(np.clip(sin_elev, -1.0, 1.0)))
 
 
-# --- 正射図法(地球儀)として描画 --------------------------------------
+# --- 平面地図(アジア〜北米が入る配置)として描画 ------------------------
 
-def render_globe(composite_image):
+def render_flat_map(composite_image):
     fig = plt.figure(
         figsize=(OUTPUT_SIZE[0] / 150, OUTPUT_SIZE[1] / 150),
         dpi=150,
         facecolor="#05070d",
     )
-    projection = ccrs.Orthographic(
-        central_longitude=CENTRAL_LONGITUDE,
-        central_latitude=CENTRAL_LATITUDE,
-    )
+    projection = ccrs.PlateCarree(central_longitude=CENTRAL_LONGITUDE)
     ax = plt.axes(projection=projection)
     ax.set_global()
-    ax.set_facecolor("#05070d")
 
     ax.imshow(
         np.asarray(composite_image),
         origin="upper",
         extent=(-180, 180, -90, 90),
-        transform=ccrs.PlateCarree(),
+        transform=ccrs.PlateCarree(),  # 元画像は中心経度0度のデータ
         interpolation="bicubic",
     )
-
-    # 地球儀の輪郭を薄く光らせる
-    ax.spines["geo"].set_edgecolor("#4a6fa5")
-    ax.spines["geo"].set_linewidth(1.2)
 
     ax.set_axis_off()
 
@@ -164,7 +155,7 @@ def render_globe(composite_image):
 def main():
     ensure_base_images()
     composite_image, _, _ = build_composite_image()
-    render_globe(composite_image)
+    render_flat_map(composite_image)
 
 
 if __name__ == "__main__":
